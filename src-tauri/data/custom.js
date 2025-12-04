@@ -1,5 +1,1934 @@
-console.log('custom.js ----')
+window.addEventListener("DOMContentLoaded",()=>{const t=document.createElement("script");t.src="https://www.googletagmanager.com/gtag/js?id=G-W5GKHM0893",t.async=!0,document.head.appendChild(t);const n=document.createElement("script");n.textContent="window.dataLayer = window.dataLayer || [];function gtag(){dataLayer.push(arguments);}gtag('js', new Date());gtag('config', 'G-W5GKHM0893');",document.body.appendChild(n)});<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>儿童积分奖励系统</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', 'Arial Rounded MT Bold', 'Arial', sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #333;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+        
+        header {
+            background: linear-gradient(90deg, #4b6cb7 0%, #182848 100%);
+            color: white;
+            padding: 25px 30px;
+            text-align: center;
+            border-bottom-left-radius: 20px;
+            border-bottom-right-radius: 20px;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+        }
+        
+        h1 i {
+            color: #FFD700;
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+        
+        .dashboard {
+            display: flex;
+            flex-wrap: wrap;
+            padding: 25px;
+            gap: 25px;
+        }
+        
+        .score-card {
+            flex: 1;
+            min-width: 300px;
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            border-radius: 15px;
+            padding: 25px;
+            color: white;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+        }
+        
+        .avatar-container {
+            position: relative;
+            margin-bottom: 20px;
+        }
+        
+        .avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background-color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+            border: 5px solid white;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+        }
+        
+        .avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .change-avatar-btn {
+            position: absolute;
+            bottom: 5px;
+            right: 5px;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+        }
+        
+        .change-avatar-btn:hover {
+            transform: scale(1.1);
+            background-color: #2980b9;
+        }
+        
+        .score-title {
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        
+        .score-value {
+            font-size: 4.5rem;
+            font-weight: bold;
+            margin: 10px 0 20px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        
+        .score-buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 10px;
+            width: 100%;
+        }
+        
+        .btn {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+            flex: 1;
+        }
+        
+        .btn-add {
+            background-color: #4CAF50;
+            color: white;
+        }
+        
+        .btn-subtract {
+            background-color: #f44336;
+            color: white;
+        }
+        
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+        }
+        
+        .btn:active {
+            transform: translateY(0);
+        }
+        
+        .tasks-rewards {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 25px;
+            padding: 0 25px 25px;
+        }
+        
+        .column {
+            flex: 1;
+            min-width: 300px;
+            background-color: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+        
+        .column-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+        
+        .column-title {
+            font-size: 1.8rem;
+            color: #2c3e50;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .btn-add-item {
+            background-color: #3498db;
+            color: white;
+            padding: 10px 20px;
+            font-size: 0.9rem;
+        }
+        
+        .item-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            max-height: 400px;
+            overflow-y: auto;
+            padding-right: 5px;
+        }
+        
+        .item {
+            background-color: #f8f9fa;
+            border-radius: 12px;
+            padding: 18px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-left: 5px solid #3498db;
+            transition: all 0.3s ease;
+        }
+        
+        .reward-item {
+            border-left-color: #e74c3c;
+        }
+        
+        .item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.08);
+        }
+        
+        .item-info {
+            flex: 1;
+        }
+        
+        .item-name {
+            font-size: 1.3rem;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .item-desc {
+            color: #7f8c8d;
+            font-size: 0.95rem;
+        }
+        
+        .item-points {
+            font-size: 1.4rem;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-right: 15px;
+        }
+        
+        .item-controls {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .icon-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            transition: all 0.2s ease;
+        }
+        
+        .icon-btn-complete {
+            background-color: #2ecc71;
+            color: white;
+        }
+        
+        .icon-btn-redeem {
+            background-color: #9b59b6;
+            color: white;
+        }
+        
+        .icon-btn-edit {
+            background-color: #f39c12;
+            color: white;
+        }
+        
+        .icon-btn-delete {
+            background-color: #e74c3c;
+            color: white;
+        }
+        
+        .icon-btn:hover {
+            transform: scale(1.1);
+        }
+        
+        .history-section {
+            padding: 0 25px 25px;
+        }
+        
+        .history-card {
+            background-color: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+        
+        .history-list {
+            max-height: 250px;
+            overflow-y: auto;
+            margin-top: 15px;
+        }
+        
+        .history-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 15px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        
+        .history-item:last-child {
+            border-bottom: none;
+        }
+        
+        .history-positive {
+            color: #2ecc71;
+        }
+        
+        .history-negative {
+            color: #e74c3c;
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .modal-content {
+            background-color: white;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 500px;
+            padding: 30px;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+            animation: modalFade 0.3s;
+        }
+        
+        @keyframes modalFade {
+            from { opacity: 0; transform: translateY(-50px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+        
+        .modal-title {
+            font-size: 1.8rem;
+            color: #2c3e50;
+        }
+        
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 1.8rem;
+            cursor: pointer;
+            color: #7f8c8d;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+        
+        input, textarea, select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+        
+        input:focus, textarea:focus, select:focus {
+            outline: none;
+            border-color: #3498db;
+        }
+        
+        textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+        
+        .form-buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 25px;
+        }
+        
+        .btn-submit {
+            background-color: #3498db;
+            color: white;
+            flex: 2;
+        }
+        
+        .btn-cancel {
+            background-color: #95a5a6;
+            color: white;
+            flex: 1;
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: #7f8c8d;
+        }
+        
+        .empty-state i {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            opacity: 0.5;
+        }
+        
+        .empty-state p {
+            font-size: 1.1rem;
+        }
+        
+        .data-controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+            padding: 0 25px 25px;
+        }
+        
+        .btn-export {
+            background-color: #16a085;
+            color: white;
+        }
+        
+        .btn-import {
+            background-color: #8e44ad;
+            color: white;
+        }
+        
+        .btn-reset {
+            background-color: #c0392b;
+            color: white;
+        }
+        
+        /* 头像选择模态框样式 */
+        .avatar-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin: 20px 0;
+            max-height: 400px;
+            overflow-y: auto;
+            padding: 10px;
+        }
+        
+        .avatar-option {
+            width: 100%;
+            aspect-ratio: 1;
+            border-radius: 50%;
+            background-color: #f8f9fa;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 3px solid transparent;
+        }
+        
+        .avatar-option:hover {
+            transform: scale(1.1);
+            border-color: #3498db;
+        }
+        
+        .avatar-option.selected {
+            border-color: #2ecc71;
+            box-shadow: 0 0 0 3px rgba(46, 204, 113, 0.3);
+        }
+        
+        .avatar-option img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+        }
+        
+        .avatar-type-selector {
+            display: flex;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+        
+        .avatar-type-btn {
+            flex: 1;
+            padding: 12px;
+            background: none;
+            border: none;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            color: #7f8c8d;
+            transition: all 0.3s ease;
+            border-bottom: 3px solid transparent;
+        }
+        
+        .avatar-type-btn.active {
+            color: #3498db;
+            border-bottom-color: #3498db;
+        }
+        
+        /* 上传头像区域 */
+        .upload-avatar-container {
+            text-align: center;
+            padding: 30px 20px;
+            border: 2px dashed #3498db;
+            border-radius: 15px;
+            margin: 20px 0;
+            background-color: #f8fafc;
+        }
+        
+        .upload-avatar-btn {
+            background-color: #3498db;
+            color: white;
+            padding: 12px 25px;
+            border-radius: 50px;
+            border: none;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 15px;
+            transition: all 0.3s ease;
+        }
+        
+        .upload-avatar-btn:hover {
+            background-color: #2980b9;
+            transform: translateY(-3px);
+        }
+        
+        .avatar-preview {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            margin: 0 auto 20px;
+            background-color: #f8f9fa;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+            overflow: hidden;
+            border: 5px solid white;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .avatar-preview img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        @media (max-width: 768px) {
+            .dashboard {
+                padding: 15px;
+            }
+            
+            .tasks-rewards {
+                padding: 0 15px 15px;
+            }
+            
+            .score-value {
+                font-size: 3.5rem;
+            }
+            
+            .column {
+                padding: 20px;
+            }
+            
+            .history-section {
+                padding: 0 15px 15px;
+            }
+            
+            .avatar-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+            
+            .avatar {
+                width: 100px;
+                height: 100px;
+                font-size: 3rem;
+            }
+        }
+        
+        /* 滚动条样式 */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: #c1c1c1;
+            border-radius: 10px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: #a8a8a8;
+        }
+        
+        /* 儿童信息区域 */
+        .child-info {
+            margin-top: 10px;
+            font-size: 1.1rem;
+        }
+        
+        .child-name {
+            font-weight: bold;
+            font-size: 1.3rem;
+            margin-bottom: 5px;
+        }
+        
+        .child-age {
+            color: rgba(255, 255, 255, 0.9);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-star"></i> 儿童积分奖励系统 <i class="fas fa-star"></i></h1>
+            <p class="subtitle">完成任务赚取积分，兑换心仪奖励！</p>
+        </header>
+        
+        <div class="dashboard">
+            <div class="score-card">
+                <div class="avatar-container">
+                    <div class="avatar" id="currentAvatar">
+                        <span id="currentAvatarEmoji">👦</span>
+                    </div>
+                    <button class="change-avatar-btn" id="changeAvatarBtn">
+                        <i class="fas fa-camera"></i>
+                    </button>
+                </div>
+                
+                <div class="child-info">
+                    <div class="child-name" id="childName">小明</div>
+                    <div class="child-age" id="childAge">6岁</div>
+                </div>
+                
+                <div class="score-title">
+                    <i class="fas fa-trophy"></i>
+                    <span>当前总积分</span>
+                </div>
+                <div class="score-value" id="totalPoints">0</div>
+                <div class="score-buttons">
+                    <button class="btn btn-add" id="addPointsBtn">
+                        <i class="fas fa-plus-circle"></i> 添加积分
+                    </button>
+                    <button class="btn btn-subtract" id="subtractPointsBtn">
+                        <i class="fas fa-minus-circle"></i> 扣除积分
+                    </button>
+                </div>
+            </div>
+            
+            <div class="tasks-rewards">
+                <div class="column">
+                    <div class="column-header">
+                        <h2 class="column-title">
+                            <i class="fas fa-tasks"></i> 今日任务
+                        </h2>
+                        <button class="btn btn-add-item" id="addTaskBtn">
+                            <i class="fas fa-plus"></i> 添加任务
+                        </button>
+                    </div>
+                    <div class="item-list" id="tasksList">
+                        <!-- 任务列表将通过JS动态生成 -->
+                    </div>
+                </div>
+                
+                <div class="column">
+                    <div class="column-header">
+                        <h2 class="column-title">
+                            <i class="fas fa-gift"></i> 奖励兑换
+                        </h2>
+                        <button class="btn btn-add-item" id="addRewardBtn">
+                            <i class="fas fa-plus"></i> 添加奖励
+                        </button>
+                    </div>
+                    <div class="item-list" id="rewardsList">
+                        <!-- 奖励列表将通过JS动态生成 -->
+                    </div>
+                </div>
+            </div>
+            
+            <div class="history-section">
+                <div class="history-card">
+                    <h2 class="column-title">
+                        <i class="fas fa-history"></i> 积分历史
+                    </h2>
+                    <div class="history-list" id="historyList">
+                        <!-- 历史记录将通过JS动态生成 -->
+                    </div>
+                </div>
+            </div>
+            
+            <div class="data-controls">
+                <button class="btn btn-export" id="exportBtn">
+                    <i class="fas fa-download"></i> 导出数据
+                </button>
+                <button class="btn btn-import" id="importBtn">
+                    <i class="fas fa-upload"></i> 导入数据
+                </button>
+                <button class="btn btn-reset" id="resetBtn">
+                    <i class="fas fa-redo"></i> 重置系统
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 添加任务/奖励模态框 -->
+    <div class="modal" id="itemModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="modalTitle">添加任务</h3>
+                <button class="close-btn" id="closeModalBtn">&times;</button>
+            </div>
+            <form id="itemForm">
+                <input type="hidden" id="itemId">
+                <input type="hidden" id="itemType">
+                
+                <div class="form-group">
+                    <label for="itemName">名称</label>
+                    <input type="text" id="itemName" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="itemDescription">描述</label>
+                    <textarea id="itemDescription" placeholder="描述任务或奖励..."></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label for="itemPoints" id="pointsLabel">积分值</label>
+                    <input type="number" id="itemPoints" min="1" max="1000" required>
+                </div>
+                
+                <div class="form-group" id="frequencyGroup" style="display: none;">
+                    <label for="itemFrequency">重复频率</label>
+                    <select id="itemFrequency">
+                        <option value="daily">每日</option>
+                        <option value="weekly">每周</option>
+                        <option value="once">仅一次</option>
+                    </select>
+                </div>
+                
+                <div class="form-buttons">
+                    <button type="submit" class="btn btn-submit" id="submitBtn">保存</button>
+                    <button type="button" class="btn btn-cancel" id="cancelBtn">取消</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <!-- 积分调整模态框 -->
+    <div class="modal" id="pointsModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="pointsModalTitle">调整积分</h3>
+                <button class="close-btn" id="closePointsModalBtn">&times;</button>
+            </div>
+            <form id="pointsForm">
+                <div class="form-group">
+                    <label for="pointsAmount">积分数量</label>
+                    <input type="number" id="pointsAmount" min="1" max="1000" value="10" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="pointsReason">原因说明</label>
+                    <textarea id="pointsReason" placeholder="说明为什么增加或扣除积分..." required></textarea>
+                </div>
+                
+                <div class="form-buttons">
+                    <button type="submit" class="btn btn-submit" id="confirmPointsBtn">确认</button>
+                    <button type="button" class="btn btn-cancel" id="cancelPointsBtn">取消</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <!-- 头像选择模态框 -->
+    <div class="modal" id="avatarModal">
+        <div class="modal-content" style="max-width: 600px;">
+            <div class="modal-header">
+                <h3 class="modal-title">选择儿童头像</h3>
+                <button class="close-btn" id="closeAvatarModalBtn">&times;</button>
+            </div>
+            
+            <div class="avatar-type-selector">
+                <button class="avatar-type-btn active" data-type="emoji">表情头像</button>
+                <button class="avatar-type-btn" data-type="cartoon">卡通头像</button>
+                <button class="avatar-type-btn" data-type="upload">上传头像</button>
+            </div>
+            
+            <!-- 表情头像选择 -->
+            <div class="avatar-selector active" id="emojiSelector">
+                <div class="avatar-grid" id="emojiGrid">
+                    <!-- Emoji头像将通过JS动态生成 -->
+                </div>
+            </div>
+            
+            <!-- 卡通头像选择 -->
+            <div class="avatar-selector" id="cartoonSelector">
+                <div class="avatar-grid" id="cartoonGrid">
+                    <!-- 卡通头像将通过JS动态生成 -->
+                </div>
+            </div>
+            
+            <!-- 上传头像 -->
+            <div class="avatar-selector" id="uploadSelector">
+                <div class="upload-avatar-container">
+                    <div class="avatar-preview" id="uploadPreview">
+                        <span>👦</span>
+                    </div>
+                    <p>上传一张儿童的照片作为头像</p>
+                    <input type="file" id="avatarUpload" accept="image/*" style="display: none;">
+                    <button type="button" class="upload-avatar-btn" id="chooseImageBtn">
+                        <i class="fas fa-image"></i> 选择图片
+                    </button>
+                </div>
+                
+                <div class="form-buttons">
+                    <button type="button" class="btn btn-submit" id="uploadAvatarBtn">设置为头像</button>
+                    <button type="button" class="btn btn-cancel" id="cancelUploadBtn">取消</button>
+                </div>
+            </div>
+            
+            <div class="form-group" style="margin-top: 20px;">
+                <label for="childNameInput">儿童姓名</label>
+                <input type="text" id="childNameInput" placeholder="输入儿童姓名" value="小明">
+            </div>
+            
+            <div class="form-group">
+                <label for="childAgeInput">儿童年龄</label>
+                <input type="number" id="childAgeInput" min="1" max="18" value="6">
+            </div>
+            
+            <div class="form-buttons">
+                <button type="button" class="btn btn-submit" id="saveAvatarBtn">保存设置</button>
+                <button type="button" class="btn btn-cancel" id="cancelAvatarBtn">取消</button>
+            </div>
+        </div>
+    </div>
 
-window.addEventListener('DOMContentLoaded', () => {
-    console.log('DOMContentLoaded')
-})
+    <script>
+        // 系统数据
+        let systemData = {
+            totalPoints: 100,
+            childName: "小明",
+            childAge: 6,
+            avatar: {
+                type: "emoji", // "emoji", "cartoon", "upload"
+                value: "👦",
+                image: null // 存储base64图像数据（如果上传了图片）
+            },
+            tasks: [
+                { id: 1, name: "整理房间", description: "保持房间整洁干净", points: 10, frequency: "daily", completedToday: false },
+                { id: 2, name: "完成作业", description: "按时完成所有作业", points: 15, frequency: "daily", completedToday: false },
+                { id: 3, name: "阅读30分钟", description: "每天阅读课外书籍", points: 8, frequency: "daily", completedToday: true },
+                { id: 4, name: "帮忙洗碗", description: "晚餐后帮忙洗碗", points: 5, frequency: "daily", completedToday: false }
+            ],
+            rewards: [
+                { id: 1, name: "看电视30分钟", description: "观看喜欢的电视节目", points: 20 },
+                { id: 2, name: "玩平板电脑", description: "使用平板电脑娱乐", points: 25 },
+                { id: 3, name: "买新玩具", description: "选择一个小玩具", points: 100 },
+                { id: 4, name: "周末去公园", description: "周末家庭公园游玩", points: 50 }
+            ],
+            history: [
+                { id: 1, type: "task", name: "阅读30分钟", points: 8, date: "2023-10-15 18:30", reason: "完成任务" },
+                { id: 2, type: "reward", name: "看电视30分钟", points: -20, date: "2023-10-14 19:00", reason: "兑换奖励" },
+                { id: 3, type: "task", name: "完成作业", points: 15, date: "2023-10-14 17:00", reason: "完成任务" },
+                { id: 4, type: "task", name: "整理房间", points: 10, date: "2023-10-14 09:00", reason: "完成任务" },
+                { id: 5, type: "reward", name: "玩平板电脑", points: -25, date: "2023-10-13 16:00", reason: "兑换奖励" }
+            ],
+            nextId: { task: 5, reward: 5, history: 6 }
+        };
+
+        // 头像选项
+        const avatarOptions = {
+            emoji: ["👦", "👧", "🧒", "👨", "👩", "🦸", "🦹", "🧙", "🧛", "🧝", "🧞", "🧟", "🐶", "🐱", "🐭", "🐹", "🐰", "🦊", "🐻", "🐼", "🐨", "🐯", "🦁", "🐮", "🐵", "🐔", "🐧", "🐦", "🐤", "🦄", "🐝", "🦋", "🐞", "🐢", "🐬", "🐳", "🦀", "🦁"],
+            cartoon: ["boy1", "girl1", "boy2", "girl2", "superhero", "princess", "wizard", "fairy", "animal1", "animal2", "animal3", "animal4"]
+        };
+
+        // 卡通头像URL映射（使用免费占位图，实际使用时可以替换为真实图片）
+        const cartoonAvatarUrls = {
+            "boy1": "https://api.dicebear.com/7.x/avataaars/svg?seed=boy1&backgroundColor=b6e3f4",
+            "girl1": "https://api.dicebear.com/7.x/avataaars/svg?seed=girl1&backgroundColor=f8b5d1",
+            "boy2": "https://api.dicebear.com/7.x/avataaars/svg?seed=boy2&backgroundColor=ffd5dc",
+            "girl2": "https://api.dicebear.com/7.x/avataaars/svg?seed=girl2&backgroundColor=ffdfbf",
+            "superhero": "https://api.dicebear.com/7.x/avataaars/svg?seed=superhero&backgroundColor=d1d4f9",
+            "princess": "https://api.dicebear.com/7.x/avataaars/svg?seed=princess&backgroundColor=ffd5dc",
+            "wizard": "https://api.dicebear.com/7.x/avataaars/svg?seed=wizard&backgroundColor=c0aede",
+            "fairy": "https://api.dicebear.com/7.x/avataaars/svg?seed=fairy&backgroundColor=d1d4f9",
+            "animal1": "https://api.dicebear.com/7.x/avataaars/svg?seed=animal1&backgroundColor=b6e3f4",
+            "animal2": "https://api.dicebear.com/7.x/avataaars/svg?seed=animal2&backgroundColor=ffdfbf",
+            "animal3": "https://api.dicebear.com/7.x/avataaars/svg?seed=animal3&backgroundColor=d1d4f9",
+            "animal4": "https://api.dicebear.com/7.x/avataaars/svg?seed=animal4&backgroundColor=ffd5dc"
+        };
+
+        // DOM元素
+        const totalPointsEl = document.getElementById('totalPoints');
+        const tasksListEl = document.getElementById('tasksList');
+        const rewardsListEl = document.getElementById('rewardsList');
+        const historyListEl = document.getElementById('historyList');
+        const currentAvatarEmoji = document.getElementById('currentAvatarEmoji');
+        const currentAvatar = document.getElementById('currentAvatar');
+        const childNameEl = document.getElementById('childName');
+        const childAgeEl = document.getElementById('childAge');
+        
+        // 模态框相关
+        const itemModal = document.getElementById('itemModal');
+        const pointsModal = document.getElementById('pointsModal');
+        const avatarModal = document.getElementById('avatarModal');
+        const itemForm = document.getElementById('itemForm');
+        const pointsForm = document.getElementById('pointsForm');
+        
+        // 头像选择相关元素
+        const emojiGrid = document.getElementById('emojiGrid');
+        const cartoonGrid = document.getElementById('cartoonGrid');
+        const uploadPreview = document.getElementById('uploadPreview');
+        const avatarUpload = document.getElementById('avatarUpload');
+        
+        // 当前选中的头像
+        let selectedAvatar = {
+            type: "emoji",
+            value: "👦",
+            image: null
+        };
+        
+        // 上传的图片数据
+        let uploadedImage = null;
+
+        // 初始化应用
+        document.addEventListener('DOMContentLoaded', function() {
+            // 尝试从本地存储加载数据
+            loadData();
+            
+            // 更新显示
+            updateDisplay();
+            
+            // 初始化头像选择器
+            initAvatarSelectors();
+            
+            // 事件监听器
+            setupEventListeners();
+        });
+
+        // 初始化头像选择器
+        function initAvatarSelectors() {
+            // 初始化Emoji头像网格
+            emojiGrid.innerHTML = '';
+            avatarOptions.emoji.forEach(emoji => {
+                const emojiOption = document.createElement('div');
+                emojiOption.className = 'avatar-option';
+                if (systemData.avatar.type === 'emoji' && systemData.avatar.value === emoji) {
+                    emojiOption.classList.add('selected');
+                }
+                emojiOption.textContent = emoji;
+                emojiOption.dataset.value = emoji;
+                emojiOption.addEventListener('click', () => selectAvatar('emoji', emoji));
+                emojiGrid.appendChild(emojiOption);
+            });
+            
+            // 初始化卡通头像网格
+            cartoonGrid.innerHTML = '';
+            avatarOptions.cartoon.forEach(cartoon => {
+                const cartoonOption = document.createElement('div');
+                cartoonOption.className = 'avatar-option';
+                if (systemData.avatar.type === 'cartoon' && systemData.avatar.value === cartoon) {
+                    cartoonOption.classList.add('selected');
+                }
+                cartoonOption.innerHTML = `<img src="${cartoonAvatarUrls[cartoon]}" alt="${cartoon}">`;
+                cartoonOption.dataset.value = cartoon;
+                cartoonOption.addEventListener('click', () => selectAvatar('cartoon', cartoon));
+                cartoonGrid.appendChild(cartoonOption);
+            });
+            
+            // 初始化上传预览
+            if (systemData.avatar.type === 'upload' && systemData.avatar.image) {
+                uploadPreview.innerHTML = `<img src="${systemData.avatar.image}" alt="上传的头像">`;
+            }
+        }
+
+        // 设置事件监听器
+        function setupEventListeners() {
+            // 添加任务/奖励按钮
+            document.getElementById('addTaskBtn').addEventListener('click', () => openItemModal('task'));
+            document.getElementById('addRewardBtn').addEventListener('click', () => openItemModal('reward'));
+            
+            // 积分调整按钮
+            document.getElementById('addPointsBtn').addEventListener('click', () => openPointsModal('add'));
+            document.getElementById('subtractPointsBtn').addEventListener('click', () => openPointsModal('subtract'));
+            
+            // 更换头像按钮
+            document.getElementById('changeAvatarBtn').addEventListener('click', openAvatarModal);
+            
+            // 模态框关闭按钮
+            document.getElementById('closeModalBtn').addEventListener('click', closeItemModal);
+            document.getElementById('closePointsModalBtn').addEventListener('click', closePointsModal);
+            document.getElementById('closeAvatarModalBtn').addEventListener('click', closeAvatarModal);
+            document.getElementById('cancelBtn').addEventListener('click', closeItemModal);
+            document.getElementById('cancelPointsBtn').addEventListener('click', closePointsModal);
+            document.getElementById('cancelAvatarBtn').addEventListener('click', closeAvatarModal);
+            document.getElementById('cancelUploadBtn').addEventListener('click', () => {
+                selectedAvatar = {...systemData.avatar};
+                updateAvatarModalSelection();
+            });
+            
+            // 表单提交
+            itemForm.addEventListener('submit', handleItemSubmit);
+            pointsForm.addEventListener('submit', handlePointsSubmit);
+            
+            // 头像选择器标签切换
+            document.querySelectorAll('.avatar-type-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const type = this.dataset.type;
+                    
+                    // 更新活动标签
+                    document.querySelectorAll('.avatar-type-btn').forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // 显示对应的选择器
+                    document.querySelectorAll('.avatar-selector').forEach(selector => {
+                        selector.classList.remove('active');
+                    });
+                    document.getElementById(`${type}Selector`).classList.add('active');
+                });
+            });
+            
+            // 选择图片按钮
+            document.getElementById('chooseImageBtn').addEventListener('click', () => {
+                avatarUpload.click();
+            });
+            
+            // 图片上传处理
+            avatarUpload.addEventListener('change', function(e) {
+                const file = e.target.files[0];
+                if (!file) return;
+                
+                // 检查文件类型
+                if (!file.type.match('image.*')) {
+                    alert('请选择图片文件！');
+                    return;
+                }
+                
+                // 检查文件大小（限制为2MB）
+                if (file.size > 2 * 1024 * 1024) {
+                    alert('图片大小不能超过2MB！');
+                    return;
+                }
+                
+                // 预览图片
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    uploadedImage = e.target.result;
+                    uploadPreview.innerHTML = `<img src="${uploadedImage}" alt="上传的头像">`;
+                    selectAvatar('upload', 'custom');
+                };
+                reader.readAsDataURL(file);
+            });
+            
+            // 设置上传头像按钮
+            document.getElementById('uploadAvatarBtn').addEventListener('click', function() {
+                if (uploadedImage) {
+                    selectAvatar('upload', 'custom');
+                    saveAvatarSettings();
+                } else {
+                    alert('请先选择一张图片！');
+                }
+            });
+            
+            // 保存头像设置按钮
+            document.getElementById('saveAvatarBtn').addEventListener('click', saveAvatarSettings);
+            
+            // 数据管理按钮
+            document.getElementById('exportBtn').addEventListener('click', exportData);
+            document.getElementById('importBtn').addEventListener('click', importData);
+            document.getElementById('resetBtn').addEventListener('click', resetSystem);
+            
+            // 点击模态框外部关闭
+            itemModal.addEventListener('click', function(e) {
+                if (e.target === itemModal) closeItemModal();
+            });
+            
+            pointsModal.addEventListener('click', function(e) {
+                if (e.target === pointsModal) closePointsModal();
+            });
+            
+            avatarModal.addEventListener('click', function(e) {
+                if (e.target === avatarModal) closeAvatarModal();
+            });
+        }
+
+        // 更新显示
+        function updateDisplay() {
+            // 更新总积分
+            totalPointsEl.textContent = systemData.totalPoints;
+            
+            // 更新儿童信息
+            childNameEl.textContent = systemData.childName;
+            childAgeEl.textContent = `${systemData.childAge}岁`;
+            
+            // 更新头像
+            updateAvatarDisplay();
+            
+            // 更新任务列表
+            renderTasks();
+            
+            // 更新奖励列表
+            renderRewards();
+            
+            // 更新历史记录
+            renderHistory();
+            
+            // 保存数据到本地存储
+            saveData();
+        }
+
+        // 更新头像显示
+        function updateAvatarDisplay() {
+            const avatar = systemData.avatar;
+            
+            if (avatar.type === 'emoji') {
+                currentAvatarEmoji.textContent = avatar.value;
+                currentAvatarEmoji.style.display = 'block';
+                if (currentAvatar.querySelector('img')) {
+                    currentAvatar.querySelector('img').remove();
+                }
+            } else if (avatar.type === 'cartoon') {
+                currentAvatarEmoji.style.display = 'none';
+                if (currentAvatar.querySelector('img')) {
+                    currentAvatar.querySelector('img').src = cartoonAvatarUrls[avatar.value];
+                } else {
+                    const img = document.createElement('img');
+                    img.src = cartoonAvatarUrls[avatar.value];
+                    img.alt = "卡通头像";
+                    currentAvatar.appendChild(img);
+                }
+            } else if (avatar.type === 'upload' && avatar.image) {
+                currentAvatarEmoji.style.display = 'none';
+                if (currentAvatar.querySelector('img')) {
+                    currentAvatar.querySelector('img').src = avatar.image;
+                } else {
+                    const img = document.createElement('img');
+                    img.src = avatar.image;
+                    img.alt = "上传的头像";
+                    currentAvatar.appendChild(img);
+                }
+            }
+        }
+
+        // 渲染任务列表
+        function renderTasks() {
+            tasksListEl.innerHTML = '';
+            
+            if (systemData.tasks.length === 0) {
+                tasksListEl.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-clipboard-list"></i>
+                        <p>还没有任务，点击"添加任务"来创建第一个任务！</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            systemData.tasks.forEach(task => {
+                const taskEl = document.createElement('div');
+                taskEl.className = 'item';
+                taskEl.innerHTML = `
+                    <div class="item-info">
+                        <div class="item-name">${task.name}</div>
+                        <div class="item-desc">${task.description}</div>
+                    </div>
+                    <div class="item-points">+${task.points}</div>
+                    <div class="item-controls">
+                        <button class="icon-btn icon-btn-complete" data-id="${task.id}" title="完成任务">
+                            <i class="fas fa-check"></i>
+                        </button>
+                        <button class="icon-btn icon-btn-edit" data-id="${task.id}" title="编辑任务">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button class="icon-btn icon-btn-delete" data-id="${task.id}" title="删除任务">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                `;
+                
+                // 如果任务已完成，添加完成状态
+                if (task.completedToday) {
+                    taskEl.style.opacity = '0.6';
+                    taskEl.querySelector('.icon-btn-complete').innerHTML = '<i class="fas fa-redo"></i>';
+                    taskEl.querySelector('.icon-btn-complete').title = "重置任务";
+                }
+                
+                tasksListEl.appendChild(taskEl);
+            });
+            
+            // 为任务按钮添加事件监听器
+            document.querySelectorAll('.icon-btn-complete').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const taskId = parseInt(this.getAttribute('data-id'));
+                    completeTask(taskId);
+                });
+            });
+            
+            document.querySelectorAll('.icon-btn-edit').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const taskId = parseInt(this.getAttribute('data-id'));
+                    editItem('task', taskId);
+                });
+            });
+            
+            document.querySelectorAll('.icon-btn-delete').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const taskId = parseInt(this.getAttribute('data-id'));
+                    deleteItem('task', taskId);
+                });
+            });
+        }
+
+        // 渲染奖励列表
+        function renderRewards() {
+            rewardsListEl.innerHTML = '';
+            
+            if (systemData.rewards.length === 0) {
+                rewardsListEl.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-gift"></i>
+                        <p>还没有奖励，点击"添加奖励"来创建第一个奖励！</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            systemData.rewards.forEach(reward => {
+                const rewardEl = document.createElement('div');
+                rewardEl.className = 'item reward-item';
+                rewardEl.innerHTML = `
+                    <div class="item-info">
+                        <div class="item-name">${reward.name}</div>
+                        <div class="item-desc">${reward.description}</div>
+                    </div>
+                    <div class="item-points">${reward.points}</div>
+                    <div class="item-controls">
+                        <button class="icon-btn icon-btn-redeem" data-id="${reward.id}" title="兑换奖励">
+                            <i class="fas fa-shopping-cart"></i>
+                        </button>
+                        <button class="icon-btn icon-btn-edit" data-id="${reward.id}" title="编辑奖励">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button class="icon-btn icon-btn-delete" data-id="${reward.id}" title="删除奖励">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                `;
+                
+                // 如果积分不足，禁用兑换按钮
+                if (systemData.totalPoints < reward.points) {
+                    rewardEl.querySelector('.icon-btn-redeem').disabled = true;
+                    rewardEl.querySelector('.icon-btn-redeem').style.opacity = '0.5';
+                    rewardEl.querySelector('.icon-btn-redeem').style.cursor = 'not-allowed';
+                }
+                
+                rewardsListEl.appendChild(rewardEl);
+            });
+            
+            // 为奖励按钮添加事件监听器
+            document.querySelectorAll('.icon-btn-redeem').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    if (this.disabled) return;
+                    const rewardId = parseInt(this.getAttribute('data-id'));
+                    redeemReward(rewardId);
+                });
+            });
+            
+            document.querySelectorAll('.icon-btn-edit').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const rewardId = parseInt(this.getAttribute('data-id'));
+                    editItem('reward', rewardId);
+                });
+            });
+            
+            document.querySelectorAll('.icon-btn-delete').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const rewardId = parseInt(this.getAttribute('data-id'));
+                    deleteItem('reward', rewardId);
+                });
+            });
+        }
+
+        // 渲染历史记录
+        function renderHistory() {
+            historyListEl.innerHTML = '';
+            
+            if (systemData.history.length === 0) {
+                historyListEl.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-history"></i>
+                        <p>还没有积分记录，完成任务或兑换奖励后这里会显示记录。</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            // 按日期排序（最新的在前）
+            const sortedHistory = [...systemData.history].sort((a, b) => new Date(b.date) - new Date(a.date));
+            
+            sortedHistory.forEach(record => {
+                const historyEl = document.createElement('div');
+                historyEl.className = 'history-item';
+                
+                const pointsClass = record.points > 0 ? 'history-positive' : 'history-negative';
+                const pointsSign = record.points > 0 ? '+' : '';
+                
+                historyEl.innerHTML = `
+                    <div>
+                        <div><strong>${record.name}</strong></div>
+                        <div style="font-size: 0.9rem; color: #7f8c8d;">${record.reason}</div>
+                    </div>
+                    <div>
+                        <div class="${pointsClass}" style="font-weight: bold; font-size: 1.2rem;">${pointsSign}${record.points} 积分</div>
+                        <div style="font-size: 0.8rem; color: #7f8c8d;">${formatDate(record.date)}</div>
+                    </div>
+                `;
+                
+                historyListEl.appendChild(historyEl);
+            });
+        }
+
+        // 完成任务
+        function completeTask(taskId) {
+            const task = systemData.tasks.find(t => t.id === taskId);
+            if (!task) return;
+            
+            // 检查任务是否已完成
+            if (task.completedToday) {
+                // 重置任务
+                task.completedToday = false;
+                updateDisplay();
+                return;
+            }
+            
+            // 添加积分
+            systemData.totalPoints += task.points;
+            
+            // 标记任务为已完成
+            task.completedToday = true;
+            
+            // 添加到历史记录
+            addHistoryRecord('task', task.name, task.points, `完成任务: ${task.name}`);
+            
+            // 更新显示
+            updateDisplay();
+        }
+
+        // 兑换奖励
+        function redeemReward(rewardId) {
+            const reward = systemData.rewards.find(r => r.id === rewardId);
+            if (!reward) return;
+            
+            // 检查积分是否足够
+            if (systemData.totalPoints < reward.points) {
+                alert('积分不足，无法兑换此奖励！');
+                return;
+            }
+            
+            // 确认兑换
+            if (!confirm(`确定要兑换 "${reward.name}" 吗？这将花费 ${reward.points} 积分。`)) {
+                return;
+            }
+            
+            // 扣除积分
+            systemData.totalPoints -= reward.points;
+            
+            // 添加到历史记录
+            addHistoryRecord('reward', reward.name, -reward.points, `兑换奖励: ${reward.name}`);
+            
+            // 更新显示
+            updateDisplay();
+            
+            // 显示兑换成功消息
+            alert(`成功兑换 "${reward.name}"！`);
+        }
+
+        // 打开头像选择模态框
+        function openAvatarModal() {
+            // 初始化选择
+            selectedAvatar = {...systemData.avatar};
+            
+            // 更新表单中的儿童信息
+            document.getElementById('childNameInput').value = systemData.childName;
+            document.getElementById('childAgeInput').value = systemData.childAge;
+            
+            // 更新头像选择器中的选中状态
+            updateAvatarModalSelection();
+            
+            // 显示模态框
+            avatarModal.style.display = 'flex';
+        }
+
+        // 更新头像选择器中的选中状态
+        function updateAvatarModalSelection() {
+            // 清除所有选中状态
+            document.querySelectorAll('.avatar-option').forEach(option => {
+                option.classList.remove('selected');
+            });
+            
+            // 根据当前选择的头像类型设置选中状态
+            if (selectedAvatar.type === 'emoji') {
+                const selectedEmoji = document.querySelector(`.avatar-option[data-value="${selectedAvatar.value}"]`);
+                if (selectedEmoji) selectedEmoji.classList.add('selected');
+                
+                // 切换到emoji标签
+                document.querySelector('.avatar-type-btn[data-type="emoji"]').click();
+            } else if (selectedAvatar.type === 'cartoon') {
+                const selectedCartoon = document.querySelector(`.avatar-option[data-value="${selectedAvatar.value}"]`);
+                if (selectedCartoon) selectedCartoon.classList.add('selected');
+                
+                // 切换到cartoon标签
+                document.querySelector('.avatar-type-btn[data-type="cartoon"]').click();
+            } else if (selectedAvatar.type === 'upload') {
+                if (selectedAvatar.image) {
+                    uploadPreview.innerHTML = `<img src="${selectedAvatar.image}" alt="上传的头像">`;
+                }
+                
+                // 切换到upload标签
+                document.querySelector('.avatar-type-btn[data-type="upload"]').click();
+            }
+        }
+
+        // 选择头像
+        function selectAvatar(type, value) {
+            selectedAvatar.type = type;
+            selectedAvatar.value = value;
+            
+            if (type === 'upload') {
+                selectedAvatar.image = uploadedImage;
+            }
+            
+            updateAvatarModalSelection();
+        }
+
+        // 保存头像设置
+        function saveAvatarSettings() {
+            // 更新系统数据
+            systemData.avatar = {...selectedAvatar};
+            systemData.childName = document.getElementById('childNameInput').value.trim() || "小朋友";
+            systemData.childAge = parseInt(document.getElementById('childAgeInput').value) || 6;
+            
+            // 更新显示
+            updateDisplay();
+            
+            // 关闭模态框
+            closeAvatarModal();
+            
+            // 显示成功消息
+            alert('头像和儿童信息已更新！');
+        }
+
+        // 关闭头像模态框
+        function closeAvatarModal() {
+            avatarModal.style.display = 'none';
+            // 重置上传预览
+            uploadedImage = null;
+        }
+
+        // 打开添加/编辑项目模态框
+        function openItemModal(type, id = null) {
+            const modalTitle = document.getElementById('modalTitle');
+            const pointsLabel = document.getElementById('pointsLabel');
+            const frequencyGroup = document.getElementById('frequencyGroup');
+            const itemTypeInput = document.getElementById('itemType');
+            const itemIdInput = document.getElementById('itemId');
+            const itemNameInput = document.getElementById('itemName');
+            const itemDescriptionInput = document.getElementById('itemDescription');
+            const itemPointsInput = document.getElementById('itemPoints');
+            const itemFrequencyInput = document.getElementById('itemFrequency');
+            
+            // 重置表单
+            itemForm.reset();
+            
+            // 设置类型
+            itemTypeInput.value = type;
+            
+            if (type === 'task') {
+                modalTitle.textContent = id ? '编辑任务' : '添加任务';
+                pointsLabel.textContent = '积分值';
+                frequencyGroup.style.display = 'block';
+                
+                if (id) {
+                    // 编辑模式：填充现有数据
+                    const task = systemData.tasks.find(t => t.id === id);
+                    if (task) {
+                        itemIdInput.value = task.id;
+                        itemNameInput.value = task.name;
+                        itemDescriptionInput.value = task.description;
+                        itemPointsInput.value = task.points;
+                        itemFrequencyInput.value = task.frequency;
+                    }
+                } else {
+                    // 添加模式：设置默认值
+                    itemIdInput.value = '';
+                    itemPointsInput.value = 10;
+                    itemFrequencyInput.value = 'daily';
+                }
+            } else {
+                modalTitle.textContent = id ? '编辑奖励' : '添加奖励';
+                pointsLabel.textContent = '所需积分';
+                frequencyGroup.style.display = 'none';
+                
+                if (id) {
+                    // 编辑模式：填充现有数据
+                    const reward = systemData.rewards.find(r => r.id === id);
+                    if (reward) {
+                        itemIdInput.value = reward.id;
+                        itemNameInput.value = reward.name;
+                        itemDescriptionInput.value = reward.description;
+                        itemPointsInput.value = reward.points;
+                    }
+                } else {
+                    // 添加模式：设置默认值
+                    itemIdInput.value = '';
+                    itemPointsInput.value = 20;
+                }
+            }
+            
+            // 显示模态框
+            itemModal.style.display = 'flex';
+            itemNameInput.focus();
+        }
+
+        // 关闭项目模态框
+        function closeItemModal() {
+            itemModal.style.display = 'none';
+        }
+
+        // 处理项目表单提交
+        function handleItemSubmit(e) {
+            e.preventDefault();
+            
+            const itemType = document.getElementById('itemType').value;
+            const itemId = document.getElementById('itemId').value;
+            const itemName = document.getElementById('itemName').value.trim();
+            const itemDescription = document.getElementById('itemDescription').value.trim();
+            const itemPoints = parseInt(document.getElementById('itemPoints').value);
+            
+            if (!itemName || itemPoints <= 0) {
+                alert('请填写有效的名称和积分值！');
+                return;
+            }
+            
+            if (itemType === 'task') {
+                const itemFrequency = document.getElementById('itemFrequency').value;
+                
+                if (itemId) {
+                    // 编辑现有任务
+                    const taskIndex = systemData.tasks.findIndex(t => t.id === parseInt(itemId));
+                    if (taskIndex !== -1) {
+                        systemData.tasks[taskIndex].name = itemName;
+                        systemData.tasks[taskIndex].description = itemDescription;
+                        systemData.tasks[taskIndex].points = itemPoints;
+                        systemData.tasks[taskIndex].frequency = itemFrequency;
+                    }
+                } else {
+                    // 添加新任务
+                    const newTask = {
+                        id: systemData.nextId.task++,
+                        name: itemName,
+                        description: itemDescription,
+                        points: itemPoints,
+                        frequency: itemFrequency,
+                        completedToday: false
+                    };
+                    systemData.tasks.push(newTask);
+                }
+            } else {
+                if (itemId) {
+                    // 编辑现有奖励
+                    const rewardIndex = systemData.rewards.findIndex(r => r.id === parseInt(itemId));
+                    if (rewardIndex !== -1) {
+                        systemData.rewards[rewardIndex].name = itemName;
+                        systemData.rewards[rewardIndex].description = itemDescription;
+                        systemData.rewards[rewardIndex].points = itemPoints;
+                    }
+                } else {
+                    // 添加新奖励
+                    const newReward = {
+                        id: systemData.nextId.reward++,
+                        name: itemName,
+                        description: itemDescription,
+                        points: itemPoints
+                    };
+                    systemData.rewards.push(newReward);
+                }
+            }
+            
+            // 关闭模态框并更新显示
+            closeItemModal();
+            updateDisplay();
+        }
+
+        // 编辑项目
+        function editItem(type, id) {
+            openItemModal(type, id);
+        }
+
+        // 删除项目
+        function deleteItem(type, id) {
+            const confirmMsg = type === 'task' 
+                ? '确定要删除这个任务吗？' 
+                : '确定要删除这个奖励吗？';
+            
+            if (!confirm(confirmMsg)) return;
+            
+            if (type === 'task') {
+                systemData.tasks = systemData.tasks.filter(t => t.id !== id);
+            } else {
+                systemData.rewards = systemData.rewards.filter(r => r.id !== id);
+            }
+            
+            updateDisplay();
+        }
+
+        // 打开积分调整模态框
+        function openPointsModal(action) {
+            const pointsModalTitle = document.getElementById('pointsModalTitle');
+            const pointsAmountInput = document.getElementById('pointsAmount');
+            const pointsReasonInput = document.getElementById('pointsReason');
+            
+            // 设置标题和默认值
+            if (action === 'add') {
+                pointsModalTitle.textContent = '添加积分';
+                pointsAmountInput.value = 10;
+                pointsReasonInput.placeholder = '说明为什么添加积分...';
+            } else {
+                pointsModalTitle.textContent = '扣除积分';
+                pointsAmountInput.value = 10;
+                pointsReasonInput.placeholder = '说明为什么扣除积分...';
+            }
+            
+            // 显示模态框
+            pointsModal.style.display = 'flex';
+            pointsReasonInput.focus();
+        }
+
+        // 关闭积分调整模态框
+        function closePointsModal() {
+            pointsModal.style.display = 'none';
+            pointsForm.reset();
+        }
+
+        // 处理积分调整表单提交
+        function handlePointsSubmit(e) {
+            e.preventDefault();
+            
+            const pointsAmount = parseInt(document.getElementById('pointsAmount').value);
+            const pointsReason = document.getElementById('pointsReason').value.trim();
+            const modalTitle = document.getElementById('pointsModalTitle').textContent;
+            
+            if (!pointsReason || pointsAmount <= 0) {
+                alert('请填写有效的积分数量和原因！');
+                return;
+            }
+            
+            let pointsChange = pointsAmount;
+            let actionType = 'add';
+            let actionName = '添加积分';
+            
+            if (modalTitle === '扣除积分') {
+                pointsChange = -pointsAmount;
+                actionType = 'subtract';
+                actionName = '扣除积分';
+                
+                // 检查积分是否足够
+                if (systemData.totalPoints < pointsAmount) {
+                    alert('积分不足，无法扣除！');
+                    return;
+                }
+            }
+            
+            // 更新总积分
+            systemData.totalPoints += pointsChange;
+            
+            // 添加到历史记录
+            addHistoryRecord('adjust', actionName, pointsChange, pointsReason);
+            
+            // 关闭模态框并更新显示
+            closePointsModal();
+            updateDisplay();
+        }
+
+        // 添加历史记录
+        function addHistoryRecord(type, name, points, reason) {
+            const now = new Date();
+            const historyRecord = {
+                id: systemData.nextId.history++,
+                type: type,
+                name: name,
+                points: points,
+                date: now.toISOString(),
+                reason: reason
+            };
+            
+            systemData.history.unshift(historyRecord);
+            
+            // 限制历史记录数量
+            if (systemData.history.length > 50) {
+                systemData.history = systemData.history.slice(0, 50);
+            }
+        }
+
+        // 格式化日期
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            const now = new Date();
+            const diffMs = now - date;
+            const diffMins = Math.floor(diffMs / (1000 * 60));
+            const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
+            const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+            
+            if (diffMins < 60) {
+                return `${diffMins}分钟前`;
+            } else if (diffHours < 24) {
+                return `${diffHours}小时前`;
+            } else if (diffDays === 1) {
+                return '昨天';
+            } else if (diffDays < 7) {
+                return `${diffDays}天前`;
+            } else {
+                return date.toLocaleDateString('zh-CN');
+            }
+        }
+
+        // 导出数据
+        function exportData() {
+            const dataStr = JSON.stringify(systemData, null, 2);
+            const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
+            
+            const exportFileDefaultName = '儿童积分奖励系统数据.json';
+            
+            const linkElement = document.createElement('a');
+            linkElement.setAttribute('href', dataUri);
+            linkElement.setAttribute('download', exportFileDefaultName);
+            linkElement.click();
+            
+            alert('数据已导出为JSON文件，请妥善保存！');
+        }
+
+        // 导入数据
+        function importData() {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = '.json';
+            
+            input.onchange = function(e) {
+                const file = e.target.files[0];
+                if (!file) return;
+                
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    try {
+                        const importedData = JSON.parse(e.target.result);
+                        
+                        // 验证导入的数据结构
+                        if (!importedData.totalPoints || !importedData.tasks || !importedData.rewards || !importedData.history) {
+                            throw new Error('文件格式不正确');
+                        }
+                        
+                        // 确认导入
+                        if (!confirm('导入数据将覆盖当前所有数据，确定要继续吗？')) {
+                            return;
+                        }
+                        
+                        systemData = importedData;
+                        updateDisplay();
+                        initAvatarSelectors();
+                        alert('数据导入成功！');
+                    } catch (error) {
+                        alert('导入失败：文件格式不正确或已损坏');
+                    }
+                };
+                
+                reader.readAsText(file);
+            };
+            
+            input.click();
+        }
+
+        // 重置系统
+        function resetSystem() {
+            if (!confirm('确定要重置系统吗？这将清除所有任务、奖励和历史记录，但会保留当前积分和头像设置。')) {
+                return;
+            }
+            
+            // 保留总积分、头像和儿童信息，重置其他数据
+            const currentPoints = systemData.totalPoints;
+            const currentAvatar = systemData.avatar;
+            const currentChildName = systemData.childName;
+            const currentChildAge = systemData.childAge;
+            
+            systemData = {
+                totalPoints: currentPoints,
+                childName: currentChildName,
+                childAge: currentChildAge,
+                avatar: currentAvatar,
+                tasks: [],
+                rewards: [],
+                history: [],
+                nextId: { task: 1, reward: 1, history: 1 }
+            };
+            
+            updateDisplay();
+            initAvatarSelectors();
+            alert('系统已重置！');
+        }
+
+        // 保存数据到本地存储
+        function saveData() {
+            try {
+                localStorage.setItem('kidsRewardSystem', JSON.stringify(systemData));
+            } catch (e) {
+                console.error('保存数据失败：', e);
+            }
+        }
+
+        // 从本地存储加载数据
+        function loadData() {
+            try {
+                const savedData = localStorage.getItem('kidsRewardSystem');
+                if (savedData) {
+                    const parsedData = JSON.parse(savedData);
+                    
+                    // 验证数据结构
+                    if (parsedData.totalPoints !== undefined && 
+                        parsedData.tasks && 
+                        parsedData.rewards && 
+                        parsedData.history) {
+                        systemData = parsedData;
+                        
+                        // 确保avatar字段存在
+                        if (!systemData.avatar) {
+                            systemData.avatar = { type: "emoji", value: "👦", image: null };
+                        }
+                        
+                        // 确保childName和childAge字段存在
+                        if (!systemData.childName) systemData.childName = "小明";
+                        if (!systemData.childAge) systemData.childAge = 6;
+                    }
+                }
+            } catch (e) {
+                console.error('加载数据失败：', e);
+            }
+        }
+
+        // 每日重置每日任务
+        function resetDailyTasks() {
+            const today = new Date().toDateString();
+            const lastReset = localStorage.getItem('lastTaskResetDate');
+            
+            if (lastReset !== today) {
+                systemData.tasks.forEach(task => {
+                    if (task.frequency === 'daily') {
+                        task.completedToday = false;
+                    }
+                });
+                
+                localStorage.setItem('lastTaskResetDate', today);
+                updateDisplay();
+            }
+        }
+
+        // 初始化每日任务重置
+        resetDailyTasks();
+    </script>
+</body>
+</html>
